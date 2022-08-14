@@ -1,0 +1,14 @@
+
+[Unit]
+Description=Publish %I as alias for %H.local via mdns (IPv6)
+Requires=avahi-daemon.service
+After=avahi-daemon.service
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c "/usr/bin/avahi-publish -a -R %I $(avahi-resolve -6 -n %H.local | awk '{print $2;exit}')"
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
